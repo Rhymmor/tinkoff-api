@@ -4,7 +4,8 @@
   "description": "Tinkoff API client",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage --collectCoverageFrom=src/**/*.{ts,tsx}",
+    "compile": "tsc"
   },
   "repository": {
     "type": "git",
@@ -28,8 +29,11 @@
     "request-promise-native": "1.0.5"
   },
   "devDependencies": {
+    "@types/jest": "24.0.0",
     "@types/joi": "14.3.1",
     "@types/request-promise-native": "1.0.15",
+    "jest": "23.6.0",
+    "ts-jest": "23.10.5",
     "tslint": "5.12.1",
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "3.3.3"
