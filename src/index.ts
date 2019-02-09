@@ -1,9 +1,7 @@
-import { Options as RequestUrlOptions, RequestPromiseOptions as RequestOptions } from 'request-promise-native';
-import { ObjectKeysSchema } from './lib/validation';
 import { SessionApi } from './commands/session';
 import { IRequestError } from './lib/error';
 import { isOk } from './lib/utils';
-import { IApiCommand, ResultCode } from './commands/common';
+import { ResultCode } from './commands/common';
 import { SessionStatusApi } from './commands/session-status';
 import { IApiCommandsManager, ApiCommandsManager } from './commands-manager';
 
