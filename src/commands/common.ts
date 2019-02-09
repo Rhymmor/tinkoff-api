@@ -5,7 +5,7 @@ export interface IApiCommand<T> {
     schemaIResponse?: ObjectKeysSchema<T>;
 }
 
-export enum KnownResultCode {
+export enum ResultCode {
     OK = 'OK',
     WAITING_CONFIRMATION = 'WAITING_CONFIRMATION',
     SESSION_IS_ABSENT = 'SESSION_IS_ABSENT',
@@ -19,7 +19,7 @@ export enum AccessLevel {
 }
 
 export interface ICommonResponse {
-    resultCode: KnownResultCode | string;
+    resultCode: ResultCode | string;
     trackingId: string;
 }
 
@@ -29,7 +29,7 @@ export interface ICommonErrorResponse extends ICommonResponse {
 }
 
 export interface ICommonQuery {
-    origin: string;
+    origin?: string;
     sessionid?: string;
     wuid?: string;
 }
