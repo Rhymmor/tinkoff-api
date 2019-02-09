@@ -15,7 +15,8 @@
         "trailing-comma": false,
         "eofline": false,
         "ordered-imports": false,
-        "align": false
+        "align": false,
+        "object-curly-spacing": false
     },
     "rulesDirectory": []
 }
