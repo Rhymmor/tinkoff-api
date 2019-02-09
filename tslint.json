@@ -5,6 +5,17 @@
         "tslint-config-airbnb"
     ],
     "jsRules": {},
-    "rules": {},
+    "rules": {
+        "ter-indent": 4,
+        "no-empty-interface": false,
+        "no-namespace": false,
+        "quotemark": false,
+        "max-line-length": [true, 120],
+        "object-literal-sort-keys": false,
+        "trailing-comma": false,
+        "eofline": false,
+        "ordered-imports": false,
+        "align": false
+    },
     "rulesDirectory": []
 }

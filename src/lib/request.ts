@@ -31,7 +31,7 @@ export class RequestManager implements IRequestManager {
     private validateResponse<T>(res: any, schema: ObjectKeysSchema<T>): T {
         const { obj, valid, error } = validateSchema<T>(res, objectSchema(schema));
         if (!valid) {
-            const resError: IRequestError = {error, response: obj, message: 'Response validation error'};
+            const resError: IRequestError = { error, response: obj, message: 'Response validation error' };
             throw resError;
         }
         return obj;
