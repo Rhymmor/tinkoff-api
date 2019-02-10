@@ -1,7 +1,11 @@
 import { IRequestManager, RequestManager } from "./lib/request";
 import { ObjectKeysSchema } from "./lib/validation";
 import { IApiCommand } from "./commands/common";
-import { Options as RequestUrlOptions, RequestPromiseOptions as RequestOptions } from 'request-promise-native';
+import {
+    Options as RequestUrlOptions,
+    RequestPromiseOptions as RequestOptions,
+    defaults as requestDefaults
+} from 'request-promise-native';
 
 export interface IApiCommandsManager {
     send<T>(command: IApiCommand<T>, options?: RequestOptions): Promise<T>;
@@ -14,10 +18,10 @@ export class ApiCommandsManager implements IApiCommandsManager {
     private request: IRequestManager;
 
     constructor(requestManager?: IRequestManager) {
-        this.request = requestManager || new RequestManager({
+        this.request = requestManager || new RequestManager(requestDefaults({
             baseUrl: ApiCommandsManager.BASE_URL,
             json: true,
-        });
+        }));
     }
 
     public send<T>(command: IApiCommand<T>, options?: RequestOptions) {

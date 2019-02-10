@@ -10,13 +10,15 @@ export interface IRequestManager {
     send<T>(options: baseRequest.Options, schema?: ObjectKeysSchema<T>): Promise<T>;
 }
 
+type PromiseRequestAPI = RequestAPI<baseRequest.RequestPromise<any>, baseRequest.RequestPromiseOptions, RequiredUriUrl>;
+
 export class RequestManager implements IRequestManager {
     private static readonly DEFAULT_METHOD = 'get';
 
-    private request: RequestAPI<baseRequest.RequestPromise<any>, baseRequest.RequestPromiseOptions, RequiredUriUrl>;
+    private request: PromiseRequestAPI;
 
-    constructor(defaultOptions?: baseRequest.RequestPromiseOptions) {
-        this.request = baseRequest.defaults(defaultOptions || {});
+    constructor(request?: PromiseRequestAPI) {
+        this.request = request || baseRequest.defaults({});
     }
 
     public async send<T>(options: baseRequest.Options, schema?: ObjectKeysSchema<T>): Promise<T> {
