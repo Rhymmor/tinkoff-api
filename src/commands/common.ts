@@ -1,10 +1,11 @@
-import { ObjectKeysSchema, joi, objectSchema } from "../lib/validation";
+import { ObjectKeysSchema, joi, objectSchema, validateSchema } from "../lib/validation";
 import { ResultCode } from "./types";
 
 export interface IApiCommand<T> {
     url: Readonly<string>;
     schemaIResponse?: ObjectKeysSchema<T>;
     requiredSession: Readonly<boolean>;
+    method?: Readonly<string>;
 }
 
 export interface ICommonResponse {
@@ -34,4 +35,8 @@ const schemaKeysICommonErrorResponse: ObjectKeysSchema<ICommonErrorResponse> = {
     plainMessage: joi.string().optional()
 };
 
-export const schemaICommonErrorResponse = objectSchema<ICommonErrorResponse>(schemaKeysICommonErrorResponse);
+const schemaICommonErrorResponse = objectSchema<ICommonErrorResponse>(schemaKeysICommonErrorResponse);
+
+export function isApiErrorResponse(res: ICommonResponse): res is ICommonErrorResponse {
+    return validateSchema(res, schemaICommonErrorResponse).valid;
+}

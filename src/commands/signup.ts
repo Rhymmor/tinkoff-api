@@ -11,10 +11,12 @@ export namespace SignUpCommand {
     }
     export type IAuth = IAuthPhone | IAuthCredentials;
 
-    export type IRequestQuery = ICommonQuery & IAuth;
+    export type IRequestQuery = ICommonQuery;
+    export type IRequestForm = IAuth;
+
     export interface IResponse extends ICommonResponse {
         operationTicket: string;
-        initialOperation: string;
+        initialOperation?: string;
         confirmations: string[];
         // TODO: add strict type
         confirmationData: Record<string, object>;
@@ -30,4 +32,5 @@ export namespace SignUpCommand {
 
     export const url: Readonly<string> = '/sign_up';
     export const requiredSession: Readonly<boolean> = true;
+    export const method = 'POST';
 }

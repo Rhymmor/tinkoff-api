@@ -1,10 +1,10 @@
 import { SessionCommand } from './commands/session';
 import { ResultCode, ApiOperation } from './commands/types';
-import { ResultCode } from './commands/types';
 import { SessionStatusCommand } from './commands/session-status';
-import { IApiCommandsManager, ApiCommandsManager } from './commands-manager';
+import { IApiCommandsManager, ApiCommandsManager } from './modules/commands-manager';
 import { SignUpCommand } from './commands/signup';
 import { RequestError } from './lib/error';
+import { ConfirmCommand } from './commands/confirm';
 
 export class TinkoffApi {
     private sessionId: string | undefined;
@@ -36,7 +36,22 @@ export class TinkoffApi {
     }
 
     public async signUp(auth: SignUpCommand.IAuth) {
-        const query: SignUpCommand.IRequestQuery = { ...auth, sessionid: this.sessionId! };
-        await this.api.send(SignUpCommand, {qs: query});
+        // Actually, GET request with auth params in query also works. That's kinda strange
+        const query: SignUpCommand.IRequestQuery = { sessionid: this.sessionId! };
+        return await this.api.send(SignUpCommand, {qs: query, form: auth});
+    }
+
+    public async confirm(operation: string, operationTicket: string, smsId: string | number) {
+        const query: ConfirmCommand.IRequestQuery = { sessionid: this.sessionId! };
+        const formData: ConfirmCommand.IRequestForm = {
+            initialOperation: operation,
+            initialOperationTicket: operationTicket,
+            confirmationData: JSON.stringify({SMSBYID: smsId})
+        };
+        return await this.api.send(ConfirmCommand, {qs: query, form: formData});
+    }
+
+    public confirmSignUp(operationTicket: string, smsId: string) {
+        return this.confirm(ApiOperation.SIGN_UP, operationTicket, smsId);
     }
 }
