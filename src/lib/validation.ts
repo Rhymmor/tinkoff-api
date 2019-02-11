@@ -10,8 +10,8 @@ export interface IValidationResult<T> {
     obj: T;
 }
 
-export function objectSchema<T>(keys: Required<UseKeys<T, joi.Schema>>) {
-    return joi.object().keys(keys).options({ allowUnknown: true });
+export function objectSchema<T>(keys: Required<UseKeys<T, joi.Schema>>, allowUnknown = true) {
+    return joi.object().keys(keys).options({ allowUnknown });
 }
 
 export function validateSchema<T>(obj: any, schema: joi.SchemaLike): IValidationResult<T> {

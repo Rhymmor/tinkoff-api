@@ -1,8 +1,9 @@
 import { ICommonQuery, ICommonResponse, schemaKeysICommonResponse } from "./common";
 import { joi, ObjectKeysSchema, objectSchema } from "../lib/validation";
 import { AccessLevel, IApiAdditionalAuth } from "./types";
+import { schemaIApiAdditionalAuth } from "./types/validation";
 
-export namespace SessionStatusApi {
+export namespace SessionStatusCommand {
     export interface IRequestQuery extends ICommonQuery {
         sessionid: string;
     }
@@ -28,5 +29,6 @@ export namespace SessionStatusApi {
         })
     };
 
-    export const url = '/session_status';
+    export const url: Readonly<string> = '/session_status';
+    export const requiredSession: Readonly<boolean> = true;
 }

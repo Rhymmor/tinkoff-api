@@ -1,14 +1,20 @@
 import { IRequestManager, RequestManager } from "./lib/request";
 import { ObjectKeysSchema } from "./lib/validation";
-import { IApiCommand } from "./commands/common";
+import { IApiCommand, ICommonQuery } from "./commands/common";
 import {
     Options as RequestUrlOptions,
     RequestPromiseOptions as RequestOptions,
     defaults as requestDefaults
 } from 'request-promise-native';
+import { isOk } from "./lib/utils";
+import { IRequestError } from "./lib/error";
 
 export interface IApiCommandsManager {
     send<T>(command: IApiCommand<T>, options?: RequestOptions): Promise<T>;
+}
+
+interface IApiRequestOptions extends RequestOptions {
+    qs: ICommonQuery;
 }
 
 export class ApiCommandsManager implements IApiCommandsManager {
@@ -24,8 +30,16 @@ export class ApiCommandsManager implements IApiCommandsManager {
         }));
     }
 
-    public send<T>(command: IApiCommand<T>, options?: RequestOptions) {
-        return this.makeRequest({ ...options, url: command.url }, command.schemaIResponse);
+
+
+    public async send<T>(command: IApiCommand<T>, options?: IApiRequestOptions) {
+        if (command.requiredSession && (!options || !isOk(options.qs.sessionid))) {
+            const resError: IRequestError = {
+                message: `No session ID was provided`
+            };
+            throw resError;
+        }
+        return await this.makeRequest({ ...options, url: command.url }, command.schemaIResponse);
     }
 
     private makeRequest<T>(options: RequestUrlOptions, schema?: ObjectKeysSchema<T>) {
