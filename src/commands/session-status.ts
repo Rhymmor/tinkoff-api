@@ -1,5 +1,6 @@
-import { ICommonQuery, ICommonResponse, schemaKeysICommonResponse, AccessLevel } from "./common";
+import { ICommonQuery, ICommonResponse, schemaKeysICommonResponse } from "./common";
 import { joi, ObjectKeysSchema, objectSchema } from "../lib/validation";
+import { AccessLevel, IApiAdditionalAuth } from "./types";
 
 export namespace SessionStatusApi {
     export interface IRequestQuery extends ICommonQuery {
@@ -10,6 +11,7 @@ export namespace SessionStatusApi {
         accessLevel: AccessLevel;
         millisLeft?: number;
         userId: string;
+        additionalAuth: IApiAdditionalAuth;
     }
 
     export interface IResponse extends ICommonResponse {
@@ -21,7 +23,8 @@ export namespace SessionStatusApi {
         payload: objectSchema<IPayload>({
             accessLevel: joi.string().required(),
             millisLeft: joi.number().optional(),
-            userId: joi.string().required()
+            userId: joi.string().required(),
+            additionalAuth: schemaIApiAdditionalAuth.required()
         })
     };
 

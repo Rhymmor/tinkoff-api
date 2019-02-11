@@ -1,7 +1,7 @@
 import { SessionApi } from './commands/session';
 import { IRequestError } from './lib/error';
-import { isOk } from './lib/utils';
-import { ResultCode } from './commands/common';
+import { ResultCode } from './commands/types';
+import { SessionStatusCommand } from './commands/session-status';
 import { SessionStatusApi } from './commands/session-status';
 import { IApiCommandsManager, ApiCommandsManager } from './commands-manager';
 
