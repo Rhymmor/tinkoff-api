@@ -12,7 +12,7 @@ export namespace SessionStatusCommand {
         accessLevel: AccessLevel;
         millisLeft?: number;
         userId: string;
-        additionalAuth: IApiAdditionalAuth;
+        additionalAuth?: IApiAdditionalAuth;
     }
 
     export interface IResponse extends ICommonResponse {
@@ -25,7 +25,7 @@ export namespace SessionStatusCommand {
             accessLevel: joi.string().required(),
             millisLeft: joi.number().optional(),
             userId: joi.string().required(),
-            additionalAuth: schemaIApiAdditionalAuth.required()
+            additionalAuth: schemaIApiAdditionalAuth.optional()
         })
     };
 
