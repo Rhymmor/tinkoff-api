@@ -1,6 +1,7 @@
 
-export interface IRequestError<T = any> {
+export interface IRequestError<Req = any, Res = any> {
     message: string;
-    response?: T;
+    request?: Req;
+    response?: Res;
     error?: any;
 }

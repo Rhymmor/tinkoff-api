@@ -23,17 +23,22 @@ export class RequestManager implements IRequestManager {
 
     public async send<T>(options: baseRequest.Options, schema?: ObjectKeysSchema<T>): Promise<T> {
         const res = await this.request[this.getMethod(options)](options);
-        return schema ? this.validateResponse(res, schema) : res;
+        return schema ? this.validateResponse(res, schema, options) : res;
     }
 
     private getMethod(options: baseRequest.Options): RequestTypes {
         return options.method ? options.method.toLowerCase() as RequestTypes : RequestManager.DEFAULT_METHOD;
     }
 
-    private validateResponse<T>(res: any, schema: ObjectKeysSchema<T>): T {
+    private validateResponse<T>(res: any, schema: ObjectKeysSchema<T>, options: baseRequest.Options): T {
         const { obj, valid, error } = validateSchema<T>(res, objectSchema(schema));
         if (!valid) {
-            const resError: IRequestError = { error, response: obj, message: 'Response validation error' };
+            const resError: IRequestError = {
+                error,
+                request: options,
+                response: obj,
+                message: 'Response validation error'
+            };
             throw resError;
         }
         return obj;
