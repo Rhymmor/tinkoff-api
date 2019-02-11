@@ -1,4 +1,4 @@
-import {validateSchema, joi, objectSchema} from '../../src/lib/validation';
+import {validateSchema, joi, objectSchema, isValidationError} from '../../src/lib/validation';
 
 describe('Validation utils function tests', () => {
     test('check validateSchema return type', () => {
@@ -30,5 +30,14 @@ describe('Validation utils function tests', () => {
 
     test('check objectSchema to fail on empty schema', () => {
         expect(() => objectSchema(null as any)).not.toThrow();
+    });
+
+    test('check ValidationError type guard', () => {
+        expect(isValidationError(null)).toBe(false);
+        expect(isValidationError(undefined)).toBe(false);
+        expect(isValidationError({})).toBe(false);
+
+        const {error} = validateSchema({}, joi.string());
+        expect(isValidationError(error)).toBe(true);
     });
 });

@@ -1,5 +1,6 @@
 import * as joi from 'joi';
 import { UseKeys } from './util-types';
+import { isOk } from './utils';
 
 export type ObjectKeysSchema<T> = Required<UseKeys<T, joi.Schema>>;
 
@@ -27,6 +28,10 @@ export function validateSchema<T>(obj: any, schema: joi.SchemaLike): IValidation
 
 function formatValidationError(error: joi.ValidationError): string {
     return error.details.map(err => `${err.path}: ${err.message}`).join(', ');
+}
+
+export function isValidationError(e: any): e is joi.ValidationError {
+    return isOk(e) && !!e.isJoi && e.name === 'ValidationError';
 }
 
 export { joi };
