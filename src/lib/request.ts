@@ -2,7 +2,7 @@
 import * as baseRequest from 'request-promise-native';
 import { RequestAPI, RequiredUriUrl } from 'request';
 import { ObjectKeysSchema, validateSchema, objectSchema } from './validation';
-import { IRequestError } from './error';
+import { RequestError } from './error';
 
 type RequestTypes = 'get' | 'post' | 'put' | 'delete';
 
@@ -33,13 +33,12 @@ export class RequestManager implements IRequestManager {
     private validateResponse<T>(res: any, schema: ObjectKeysSchema<T>, options: baseRequest.Options): T {
         const { obj, valid, error } = validateSchema<T>(res, objectSchema(schema));
         if (!valid) {
-            const resError: IRequestError = {
+            throw new RequestError({
                 error,
                 request: options,
                 response: obj,
                 message: 'Response validation error'
-            };
-            throw resError;
+            });
         }
         return obj;
     }

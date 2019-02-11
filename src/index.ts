@@ -1,9 +1,10 @@
 import { SessionCommand } from './commands/session';
-import { IRequestError } from './lib/error';
+import { ResultCode, ApiOperation } from './commands/types';
 import { ResultCode } from './commands/types';
 import { SessionStatusCommand } from './commands/session-status';
 import { IApiCommandsManager, ApiCommandsManager } from './commands-manager';
 import { SignUpCommand } from './commands/signup';
+import { RequestError } from './lib/error';
 
 export class TinkoffApi {
     private sessionId: string | undefined;
@@ -20,11 +21,10 @@ export class TinkoffApi {
     public async initializeSession(): Promise<SessionCommand.IResponse> {
         const res = await this.api.send(SessionCommand);
         if (res.resultCode !== ResultCode.OK) {
-            const resError: IRequestError = {
+            throw new RequestError({
                 message: `Cannot get sessionid: result code is '${res.resultCode}'`,
                 response: res
-            };
-            throw resError;
+            });
         }
         this.setSession(res.payload);
         return res;

@@ -2,6 +2,7 @@ import {RequestManager} from '../../src/lib/request';
 import nock = require('nock');
 import { joi } from '../../src/lib/validation';
 import * as baseRequest from 'request-promise-native';
+import { RequestError } from '../../src/lib/error';
 
 describe('RequestManager tests', () => {
     const url = 'http://test.test';
@@ -39,15 +40,19 @@ describe('RequestManager tests', () => {
         try {
             await request.send({url: '/'}, {a: joi.string().required()});
         } catch (e) {
-            expect(e).toHaveProperty('error');
-            expect(e.error).toBeDefined();
-            expect(e.error).toHaveProperty('name');
-            expect(e.error.name).toBe('ValidationError');
+            expect(e).toBeInstanceOf(RequestError);
+            expect(e).toHaveProperty('props');
+            const {props} = e as RequestError;
 
-            expect(e).toHaveProperty('response');
-            expect(e.response).toEqual(responseGet);
+            expect(props).toHaveProperty('error');
+            expect(props.error).toBeDefined();
+            expect(props.error).toHaveProperty('name');
+            expect(props.error.name).toBe('ValidationError');
 
-            expect(e).toHaveProperty('message');
+            expect(props).toHaveProperty('response');
+            expect(props.response).toEqual(responseGet);
+
+            expect(props).toHaveProperty('message');
         }
     });
 
