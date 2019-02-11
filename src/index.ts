@@ -6,6 +6,10 @@ import { SignUpCommand } from './commands/signup';
 import { RequestError } from './lib/error';
 import { ConfirmCommand } from './commands/confirm';
 import { LevelUpCommand } from './commands/level-up';
+import { WarmupCacheCommand } from './commands/warmup-cache';
+import { RequestPromiseOptions } from 'request-promise';
+import { isOk, safeGet } from './lib/utils';
+import { IApiCommand, ICommonQuery } from './commands/common';
 
 export class TinkoffApi {
     private sessionId: string | undefined;
@@ -32,24 +36,21 @@ export class TinkoffApi {
     }
 
     public async checkSessionStatus() {
-        const query: SessionStatusCommand.IRequestQuery = { sessionid: this.sessionId! };
-        return await this.sender.send(SessionStatusCommand, { qs: query });
+        return await this.sendCommand(SessionStatusCommand);
     }
 
     public async signUp(auth: SignUpCommand.IAuth) {
         // Actually, GET request with auth params in query also works. That's kinda strange
-        const query: SignUpCommand.IRequestQuery = { sessionid: this.sessionId! };
-        return await this.sender.send(SignUpCommand, {qs: query, form: auth});
+        return await this.sendCommand(SignUpCommand, {form: auth});
     }
 
     public async confirm(operation: string, operationTicket: string, smsId: string | number) {
-        const query: ConfirmCommand.IRequestQuery = { sessionid: this.sessionId! };
         const formData: ConfirmCommand.IRequestForm = {
             initialOperation: operation,
             initialOperationTicket: operationTicket,
             confirmationData: JSON.stringify({SMSBYID: smsId})
         };
-        return await this.sender.send(ConfirmCommand, {qs: query, form: formData});
+        return await this.sendCommand(ConfirmCommand, {form: formData});
     }
 
     public confirmSignUp(operationTicket: string, smsId: string) {
@@ -57,6 +58,23 @@ export class TinkoffApi {
     }
 
     public levelUp() {
-        return this.sender.send(LevelUpCommand);
+        return this.sendCommand(LevelUpCommand);
+    }
+
+    public warmUpCache(wuid?: string) {
+        const options: RequestPromiseOptions = {};
+        if (isOk(wuid)) {
+            options.form = {wuid};
+        }
+        return this.sendCommand(WarmupCacheCommand, options);
+    }
+
+    private sendCommand<T>(command: IApiCommand<T>, options?: RequestPromiseOptions) {
+        const query: ICommonQuery = {
+            ...safeGet(options, x => x!.qs),
+            sessionid: this.sessionId!
+        };
+        const commandOptions = {...options, qs: query};
+        return this.sender.send(command, commandOptions);
     }
 }

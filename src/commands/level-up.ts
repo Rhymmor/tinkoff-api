@@ -7,7 +7,9 @@ export namespace LevelUpCommand {
         accessLevel: AccessLevel | string;
     }
 
-    export interface IRequestQuery extends ICommonQuery {}
+    export interface IRequestQuery extends ICommonQuery {
+        sessionid: string;
+    }
     export interface IResponse extends ICommonResponse {
         payload: IPayload;
     }

@@ -14,7 +14,9 @@ export namespace ConfirmCommand {
         login?: string;
     }
 
-    export interface IRequestQuery extends ICommonQuery {}
+    export interface IRequestQuery extends ICommonQuery {
+        sessionid: string;
+    }
     export interface IRequestForm {
         initialOperationTicket: string;
         initialOperation: string;

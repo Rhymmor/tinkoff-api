@@ -11,7 +11,9 @@ export namespace SignUpCommand {
     }
     export type IAuth = IAuthPhone | IAuthCredentials;
 
-    export type IRequestQuery = ICommonQuery;
+    export interface IRequestQuery extends ICommonQuery {
+        sessionid: string;
+    }
     export type IRequestForm = IAuth;
 
     export interface IResponse extends ICommonResponse {
