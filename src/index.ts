@@ -7,7 +7,7 @@ import { RequestError } from './lib/error';
 import { ConfirmCommand } from './commands/confirm';
 import { LevelUpCommand } from './commands/level-up';
 import { WarmupCacheCommand } from './commands/warmup-cache';
-import { RequestPromiseOptions } from 'request-promise';
+import { RequestPromiseOptions } from 'request-promise-native';
 import { isOk, safeGet } from './lib/utils';
 import { IApiCommand, ICommonQuery } from './commands/common';
 import { OperationsCommand } from './commands/operations';
