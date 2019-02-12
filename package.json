@@ -1,6 +1,6 @@
 {
   "name": "tinkoff-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Tinkoff API client",
   "main": "build/index.js",
   "types": "build/index.d.ts",
