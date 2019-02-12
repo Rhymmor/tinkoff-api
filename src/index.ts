@@ -10,6 +10,7 @@ import { WarmupCacheCommand } from './commands/warmup-cache';
 import { RequestPromiseOptions } from 'request-promise';
 import { isOk, safeGet } from './lib/utils';
 import { IApiCommand, ICommonQuery } from './commands/common';
+import { OperationsCommand } from './commands/operations';
 
 export class TinkoffApi {
     private sessionId: string | undefined;
@@ -67,6 +68,14 @@ export class TinkoffApi {
             options.form = {wuid};
         }
         return this.sendCommand(WarmupCacheCommand, options);
+    }
+
+    public getOperations(from = new Date(0), to = new Date()) {
+        const query: OperationsCommand.IRequestQuery = {
+            start: Number(from),
+            end: Number(to)
+        };
+        return this.sendCommand(OperationsCommand, {qs: query});
     }
 
     private sendCommand<T>(command: IApiCommand<T>, options?: RequestPromiseOptions) {
