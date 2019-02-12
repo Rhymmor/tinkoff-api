@@ -1,7 +1,12 @@
-Tinkoff Bank REST API client [![npm version](https://badge.fury.io/js/tinkoff-api.svg)](https://badge.fury.io/js/tinkoff-api)
+Tinkoff Bank REST API client 
+[![npm version](https://badge.fury.io/js/tinkoff-api.svg)](https://badge.fury.io/js/tinkoff-api)
 [![Build Status](https://travis-ci.org/Rhymmor/tinkoff-api.svg?branch=master)](https://travis-ci.org/Rhymmor/tinkoff-api)
 ================
-
+[![codebeat badge](https://codebeat.co/badges/bafa0d61-8772-4122-9c30-a8c6906361ae)](https://codebeat.co/projects/github-com-rhymmor-tinkoff-api-master)
+[![BCH compliance](https://bettercodehub.com/edge/badge/Rhymmor/tinkoff-api?branch=master)](https://bettercodehub.com/)
+[![CodeFactor](https://www.codefactor.io/repository/github/rhymmor/tinkoff-api/badge)](https://www.codefactor.io/repository/github/rhymmor/tinkoff-api)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f90d894ac45c4265b9c360c49a594ab2)](https://www.codacy.com/app/anatoly.belonog/tinkoff-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Rhymmor/tinkoff-api&amp;utm_campaign=Badge_Grade)
+[![Known Vulnerabilities](https://snyk.io/test/github/rhymmor/tinkoff-api/badge.svg)](https://snyk.io/test/github/rhymmor/tinkoff-api)
 
 Node.js implementation of [Tinkoff](https://www.tinkoff.ru/) REST API
 
