@@ -5,6 +5,8 @@ export namespace OperationsCommand {
     export interface IRequestQuery extends ICommonQuery {
         start: string | number;  // seconds
         end: string | number;    // seconds
+        statement?: string;      // ???
+        account?: string;
     }
     export interface IResponse extends ICommonResponse {
         payload: IPayload;
