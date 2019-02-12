@@ -1,2 +1,51 @@
-# tinkoff-api
-Tinkoff JS/TS API client
+# [Tinkoff Bank](https://www.tinkoff.ru/) REST API client
+
+Node.js implementation of Tinkoff REST API
+
+### Installation:
+
+```
+npm i tinkoff-api --save
+```
+
+### Requirements:
+
+- Node >= 6
+
+### Implemented commands:
+
+- `session` - get a new session ID to use it in all following commands
+- `session_status` - get the status of a current session by ID
+- `sign_up` - request signing up by phone or credentials
+- `confirm` - confirm signing up by an SMS pin
+- `level_up` - enhance session access rights after signing up confirmation
+- `operations` - get client operations for a certain period of time (requires signing up)
+
+### Example:
+
+Start signing up:
+
+```
+import { TinkoffApi } from "../src";
+
+const api = new TinkoffApi();
+const {payload} = await api.initializeSession();
+console.log(`Session ID = ${payload}`);
+
+const {operationTicket} = await api.signUp({username: 'Username', password: 'Password'});
+
+// You will need Ticket ID to confirm signing up
+console.log(`Ticket ID = ${operationTicket}`);
+```
+
+Then user will receive sms with 4-digits PIN. It will be used to continue registration:
+
+```
+const smsId = '0000'; // 4-digits PIN
+await api.confirmSignUp(operationTicket, smsId);
+await api.levelUp();
+const {payload: {accessLevel}} = await api.checkSessionStatus();
+
+// Should be equal to CLIENT
+console.log('Session access level = ${accessLevel}');
+```
