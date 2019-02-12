@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- stable
+- '6'
+deploy:
+  provider: npm
+  email: anatolybelonog@gmail.com
+  api_key:
+    secure: GWeiAaiVBPERpavTOYSwwux51A8iHIaH06j+5b7iPza0kb7SykcYUpdvWzpwQNpg1YK5h1fjZSHXRIL29DfWCKWrJUz8Qpf8FyzCEceAJOVXZDzGwSbaYA5fBTkJwuN2LFT67Lg5gJh1sKhb+iPe6hwuVf9/RhAxu87NifjMaD3qlSQXmLNd7nIifkxYCyupF1fGgakeAN7hfspjHhr4AmcHDWoWHFfrZ9fY2R3hdqb5Bv3CsXF3EM0lSCqKEObF3laVtgVBBIYXPK/m57PXz/k0zAiQCIN9zPFzh4LCTq9Mg/2mETqNPoPNiJm00Xs5gsVBtYzVsb0afn2xrg3msk5uTeSnOSBi3txTiPxf73SvOG/jri2IkAnGnDk8RaLvbErFiddwsrhuVBMEh91u7iGbvF6Tf69eKP7U9trPuKGzL/dqnd3pcAOWIZ7rgb06wAFGOVn5CxYhR17m/ypwA5Yf9Fsupt28nk8VGq3fe18XJ8C0/yMh0vpxdP/3z+a5OBWbktGLPeTkOTEA0isW0ZWxJEN8XH3EUY9XxL+QJdIIzKlVzixwG5ffduLIyH6OscWqkfypvrmOTQvFdeTuKtfniXhMf8rAfGQFJvH+YAo4O4IC9UldkEtQoxK3/jAE4u3rTy+fLwI6eOsaG11InWc3lITG9xzOYxeYZZh4ZvI=
+  on:
+    tags: true
+    repo: Rhymmor/tinkoff-api
+    branch: master
+  skip_cleanup: true
+

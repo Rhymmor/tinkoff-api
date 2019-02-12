@@ -1,6 +1,9 @@
-# [Tinkoff Bank](https://www.tinkoff.ru/) REST API client
+Tinkoff Bank REST API client [![npm version](https://badge.fury.io/js/tinkoff-api.svg)](https://badge.fury.io/js/tinkoff-api)
+[![Build Status](https://travis-ci.org/Rhymmor/tinkoff-api.svg?branch=master)](https://travis-ci.org/Rhymmor/tinkoff-api)
+================
 
-Node.js implementation of Tinkoff REST API
+
+Node.js implementation of [Tinkoff](https://www.tinkoff.ru/) REST API
 
 ### Installation:
 
