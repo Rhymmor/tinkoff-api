@@ -3,6 +3,7 @@ import { joi, ObjectKeysSchema } from "../lib/validation";
 
 export namespace OperationsCommand {
     export interface IRequestQuery extends ICommonQuery {
+        sessionid: string;
         start: string | number;  // seconds
         end: string | number;    // seconds
         statement?: string;      // ???

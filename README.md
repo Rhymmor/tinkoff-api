@@ -37,10 +37,10 @@ Start signing up:
 import { TinkoffApi } from "../src";
 
 const api = new TinkoffApi();
-const {payload} = await api.initializeSession();
-console.log(`Session ID = ${payload}`);
+const {payload: sessionId} = await api.initializeSession();
+console.log(`Session ID = ${sessionId}`);
 
-const {operationTicket} = await api.signUp({username: 'Username', password: 'Password'});
+const {operationTicket} = await api.signUp(sessionId, {username: 'Username', password: 'Password'});
 
 // You will need Ticket ID to confirm signing up
 console.log(`Ticket ID = ${operationTicket}`);
@@ -50,9 +50,9 @@ Then user will receive sms with 4-digits PIN. It will be used to continue regist
 
 ```
 const smsId = '0000'; // 4-digits PIN
-await api.confirmSignUp(operationTicket, smsId);
-await api.levelUp();
-const {payload: {accessLevel}} = await api.checkSessionStatus();
+await api.confirmSignUp(sessionId, operationTicket, smsId);
+await api.levelUp(sessionId);
+const {payload: {accessLevel}} = await api.checkSessionStatus(sessionId);
 
 // Should be equal to CLIENT
 console.log('Session access level = ${accessLevel}');

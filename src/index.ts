@@ -8,20 +8,15 @@ import { ConfirmCommand } from './commands/confirm';
 import { LevelUpCommand } from './commands/level-up';
 import { WarmupCacheCommand } from './commands/warmup-cache';
 import { RequestPromiseOptions } from 'request-promise-native';
-import { isOk, safeGet } from './lib/utils';
-import { IApiCommand, ICommonQuery } from './commands/common';
+import { isOk } from './lib/utils';
+import { IApiCommand } from './commands/common';
 import { OperationsCommand } from './commands/operations';
 
 export class TinkoffApi {
-    private sessionId: string | undefined;
     private sender: IApiCommandsManager;
 
     constructor(commandsManager?: IApiCommandsManager) {
         this.sender = commandsManager || new ApiCommandsManager();
-    }
-
-    public setSession(sessionId: string) {
-        this.sessionId = sessionId;
     }
 
     public async initializeSession(): Promise<SessionCommand.IResponse> {
@@ -32,46 +27,51 @@ export class TinkoffApi {
                 response: res
             });
         }
-        this.setSession(res.payload);
         return res;
     }
 
-    public async checkSessionStatus() {
-        return await this.sendCommand(SessionStatusCommand);
+    public async checkSessionStatus(sessionId: string) {
+        const query: SessionStatusCommand.IRequestQuery = {sessionid: sessionId};
+        return await this.sendCommand(SessionStatusCommand, {qs: query});
     }
 
-    public async signUp(auth: SignUpCommand.IAuth) {
+    public async signUp(sessionId: string, auth: SignUpCommand.IAuth) {
+        const query: SignUpCommand.IRequestQuery = {sessionid: sessionId};
         // Actually, GET request with auth params in query also works. That's kinda strange
-        return await this.sendCommand(SignUpCommand, {form: auth});
+        return await this.sendCommand(SignUpCommand, {form: auth, qs: query});
     }
 
-    public async confirm(operation: string, operationTicket: string, smsId: string | number) {
+    public async confirm(sessionId: string, operation: string, operationTicket: string, smsId: string | number) {
+        const query: ConfirmCommand.IRequestQuery = {sessionid: sessionId};
         const formData: ConfirmCommand.IRequestForm = {
             initialOperation: operation,
             initialOperationTicket: operationTicket,
             confirmationData: JSON.stringify({SMSBYID: smsId})
         };
-        return await this.sendCommand(ConfirmCommand, {form: formData});
+        return await this.sendCommand(ConfirmCommand, {form: formData, qs: query});
     }
 
-    public confirmSignUp(operationTicket: string, smsId: string) {
-        return this.confirm(ApiOperation.SIGN_UP, operationTicket, smsId);
+    public confirmSignUp(sessionId: string, operationTicket: string, smsId: string) {
+        return this.confirm(sessionId, ApiOperation.SIGN_UP, operationTicket, smsId);
     }
 
-    public levelUp() {
-        return this.sendCommand(LevelUpCommand);
+    public levelUp(sessionId: string) {
+        const query: LevelUpCommand.IRequestQuery = {sessionid: sessionId};
+        return this.sendCommand(LevelUpCommand, {qs: query});
     }
 
-    public warmUpCache(wuid?: string) {
-        const options: RequestPromiseOptions = {};
+    public warmUpCache(sessionId: string, wuid?: string) {
+        const query: WarmupCacheCommand.IRequestQuery = {sessionid: sessionId};
+        const options: RequestPromiseOptions = {qs: query};
         if (isOk(wuid)) {
             options.form = {wuid};
         }
         return this.sendCommand(WarmupCacheCommand, options);
     }
 
-    public getOperations(from = new Date(0), to = new Date()) {
+    public getOperations(sessionId: string, from = new Date(0), to = new Date()) {
         const query: OperationsCommand.IRequestQuery = {
+            sessionid: sessionId,
             start: Number(from),
             end: Number(to)
         };
@@ -79,11 +79,6 @@ export class TinkoffApi {
     }
 
     private sendCommand<T>(command: IApiCommand<T>, options?: RequestPromiseOptions) {
-        const query: ICommonQuery = {
-            ...safeGet(options, x => x!.qs),
-            sessionid: this.sessionId!
-        };
-        const commandOptions = {...options, qs: query};
-        return this.sender.send(command, commandOptions);
+        return this.sender.send(command, options);
     }
 }
