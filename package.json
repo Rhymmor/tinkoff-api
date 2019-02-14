@@ -35,15 +35,15 @@
   },
   "homepage": "https://github.com/Rhymmor/tinkoff-api#readme",
   "dependencies": {
+    "@types/joi": "14.3.1",
+    "@types/request-promise-native": "1.0.15",
     "joi": "14.3.1",
     "request": "2.88.0",
     "request-promise-native": "1.0.5"
   },
   "devDependencies": {
     "@types/jest": "24.0.0",
-    "@types/joi": "14.3.1",
     "@types/nock": "9.3.1",
-    "@types/request-promise-native": "1.0.15",
     "jest": "23.6.0",
     "nock": "10.0.6",
     "rimraf": "2.6.3",
